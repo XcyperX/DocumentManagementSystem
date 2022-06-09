@@ -1,0 +1,23 @@
+server:
+  port: 9123
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/document_managment?currentSchema=public
+    username: postgres
+    password: admin
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 800MB
+      max-request-size: 800MB
