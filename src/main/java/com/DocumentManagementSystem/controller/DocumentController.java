@@ -7,6 +7,7 @@ import com.DocumentManagementSystem.model.Role;
 import com.DocumentManagementSystem.model.User;
 import com.DocumentManagementSystem.security.SecurityUtils;
 import com.DocumentManagementSystem.service.DocumentService;
+import com.DocumentManagementSystem.service.UpdateDocFileService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import ma.glasnost.orika.MapperFacade;
@@ -32,6 +33,7 @@ import java.util.Objects;
 public class DocumentController {
     private final MapperFacade mapper;
     private final DocumentService documentService;
+    private final UpdateDocFileService updateDocFileService;
 
     @GetMapping("/requests/create")
     private String getCreateRequestPage() {
@@ -107,19 +109,19 @@ public class DocumentController {
         try {
             if (userFromContext.getRole().equals(Role.MANAGER)) {
                 document.setApprovedManager(true);
-                documentService.save(document);
+                documentService.save(updateDocFileService.approveRequest(document, userFromContext));
             }
             if (userFromContext.getRole().equals(Role.ANALYST)) {
                 document.setApprovedAnalyst(true);
-                documentService.save(document);
+                documentService.save(updateDocFileService.approveRequest(document, userFromContext));
             }
             if (userFromContext.getRole().equals(Role.DIRECTOR)) {
                 document.setApprovedDirector(true);
-                documentService.save(document);
+                documentService.save(updateDocFileService.approveRequest(document, userFromContext));
             }
             if (userFromContext.getRole().equals(Role.ACCOUNTANT)) {
                 document.setApprovedAccountant(true);
-                documentService.save(document);
+                documentService.save(updateDocFileService.approveRequest(document, userFromContext));
             }
         } catch (Exception e) {
             return "redirect:/requests?error";
@@ -140,19 +142,19 @@ public class DocumentController {
         try {
             if (userFromContext.getRole().equals(Role.MANAGER)) {
                 document.setApprovedManager(false);
-                documentService.save(document);
+                documentService.save(updateDocFileService.rejectRequest(document, userFromContext));
             }
             if (userFromContext.getRole().equals(Role.ANALYST)) {
                 document.setApprovedAnalyst(false);
-                documentService.save(document);
+                documentService.save(updateDocFileService.rejectRequest(document, userFromContext));
             }
             if (userFromContext.getRole().equals(Role.DIRECTOR)) {
                 document.setApprovedDirector(false);
-                documentService.save(document);
+                documentService.save(updateDocFileService.rejectRequest(document, userFromContext));
             }
             if (userFromContext.getRole().equals(Role.ACCOUNTANT)) {
                 document.setApprovedAccountant(false);
-                documentService.save(document);
+                documentService.save(updateDocFileService.rejectRequest(document, userFromContext));
             }
         } catch (Exception e) {
             return "redirect:/requests?error";
